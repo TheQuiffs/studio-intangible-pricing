@@ -22,72 +22,374 @@
       padding: 40px 24px 80px;
     }
     
-    /* Header */
-    .header { margin-bottom: 32px; }
-    .header h1 { font-size: 32px; font-weight: 300; letter-spacing: -0.5px; }
-    .header h1 span { opacity: 0.4; }
-    
-    /* Credit Costs Block */
-    .credit-costs-block {
-      margin-bottom: 40px;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    
-    .credit-costs-header {
+    /* Urgency Banner */
+    .urgency-banner {
+      text-align: center;
       padding: 12px 20px;
-      background: #fafafa;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: #888;
-      border-bottom: 1px solid #e0e0e0;
-    }
-    
-    .credit-costs-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-    }
-    
-    @media (max-width: 600px) {
-      .credit-costs-grid { grid-template-columns: 1fr; }
-    }
-    
-    .credit-cost-item {
-      padding: 20px;
-      border-right: 1px solid #e0e0e0;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-    
-    .credit-cost-item:last-child { border-right: none; }
-    
-    @media (max-width: 600px) {
-      .credit-cost-item { border-right: none; border-bottom: 1px solid #e0e0e0; }
-      .credit-cost-item:last-child { border-bottom: none; }
-    }
-    
-    .credit-cost-item .num {
-      width: 40px;
-      height: 40px;
-      border: 1.5px solid #000;
-      border-radius: 50%;
+      font-size: 13px;
+      color: #333;
+      background: #f5f5f5;
+      margin-bottom: 32px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 15px;
+      gap: 12px;
+    }
+    
+    .urgency-banner .banner-dot {
+      width: 8px;
+      height: 8px;
+      background: #2a7d2a;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    
+    .urgency-banner .banner-text {
+      font-weight: 400;
+    }
+    
+    .urgency-banner .banner-highlight {
+      font-weight: 600;
+      color: #000;
+    }
+    
+    /* Header */
+    .header { 
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px; 
+    }
+    .header h1 { font-size: 32px; font-weight: 300; letter-spacing: -0.5px; }
+    .header h1 span { opacity: 0.4; }
+    
+    /* Credit Calculator Trigger Button */
+    .calculator-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border: 1px solid #000;
+      border-radius: 6px;
+      background: #fff;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: inherit;
+      font-size: 12px;
       font-weight: 500;
+      color: #000;
+    }
+    
+    .calculator-trigger:hover {
+      background: #000;
+      color: #fff;
+    }
+    
+    .calculator-trigger .calc-icon {
+      font-size: 14px;
+    }
+    
+    /* Calculator Modal */
+    .calculator-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .calculator-overlay.active {
+      display: flex;
+    }
+    
+    .calculator-modal {
+      background: #fff;
+      border-radius: 12px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .calculator-modal-header {
+      padding: 20px;
+      border-bottom: 1px solid #e0e0e0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    
+    .calculator-modal-header h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    
+    .calculator-intro {
+      font-size: 13px;
+      color: #666;
+      margin: 0;
+    }
+    
+    .calculator-modal-close {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #888;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
       flex-shrink: 0;
     }
     
-    .credit-cost-item .text { display: flex; flex-direction: column; gap: 2px; }
-    .credit-cost-item .label { font-size: 14px; font-weight: 500; }
-    .credit-cost-item .desc { font-size: 12px; color: #888; }
+    .calculator-modal-close:hover {
+      background: #f5f5f5;
+      color: #000;
+    }
+    
+    .calculator-modal-body {
+      padding: 20px;
+    }
+    
+    .credit-calculator-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    
+    @media (max-width: 500px) {
+      .credit-calculator-grid { grid-template-columns: 1fr; }
+    }
+    
+    .credit-calc-item {
+      padding: 16px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .credit-calc-item .item-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .credit-coins {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+    
+    .credit-coins .coin {
+      width: 22px;
+      height: 22px;
+      border: 1.5px solid #000;
+      border-radius: 50%;
+      background: #fff;
+      margin-left: -8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    
+    .credit-coins .coin:first-child {
+      margin-left: 0;
+    }
+    
+    .credit-calc-item .text { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 2px; 
+    }
+    
+    .credit-calc-item .label { 
+      font-size: 14px; 
+      font-weight: 600; 
+    }
+    
+    .credit-calc-item .credit-cost { 
+      font-size: 12px; 
+      color: #666;
+      font-weight: 500;
+    }
+    
+    .credit-calc-item .item-desc {
+      font-size: 12px;
+      color: #666;
+      line-height: 1.4;
+      margin: 0;
+    }
+    
+    .credit-calc-item .qty-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 8px;
+      border-top: 1px solid #f0f0f0;
+    }
+    
+    .credit-calc-item .qty-label {
+      font-size: 11px;
+      color: #888;
+    }
+    
+    .credit-calc-item .qty-input {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .credit-calc-item .qty-btn {
+      width: 28px;
+      height: 28px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+    
+    .credit-calc-item .qty-btn:hover {
+      border-color: #000;
+      background: #f5f5f5;
+    }
+    
+    .credit-calc-item .qty-value {
+      width: 32px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    /* Calculator Result */
+    .calculator-result {
+      padding: 16px;
+      background: #f8f8f8;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    
+    .calculator-result .total-credits {
+      font-size: 15px;
+    }
+    
+    .calculator-result .total-credits strong {
+      font-weight: 600;
+    }
+    
+    .calculator-result .recommendation {
+      font-size: 13px;
+      color: #666;
+    }
+    
+    .calculator-result .recommendation strong {
+      color: #000;
+      font-weight: 500;
+    }
+    
+    .calculator-result.empty {
+      justify-content: center;
+    }
+    
+    .calculator-result.empty .total-credits {
+      color: #888;
+    }
+    
+    .calculator-modal-footer {
+      display: flex;
+      gap: 12px;
+    }
+    
+    .calculator-modal-footer button {
+      flex: 1;
+      padding: 12px;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    
+    .calculator-reset-btn {
+      background: #fff;
+      border: 1px solid #ddd;
+      color: #666;
+    }
+    
+    .calculator-reset-btn:hover {
+      border-color: #000;
+      color: #000;
+    }
+    
+    .calculator-apply-btn {
+      background: #000;
+      border: 1px solid #000;
+      color: #fff;
+      font-weight: 500;
+    }
+    
+    .calculator-apply-btn:hover {
+      background: #333;
+    }
+
+    .calculator-result .total-credits {
+      font-size: 14px;
+    }
+    
+    .calculator-result .total-credits strong {
+      font-weight: 600;
+    }
+    
+    .calculator-result .recommendation {
+      font-size: 13px;
+      color: #666;
+    }
+    
+    .calculator-result .recommendation strong {
+      color: #000;
+      font-weight: 500;
+    }
+    
+    .calculator-result.empty {
+      justify-content: center;
+    }
+    
+    .calculator-result.empty .total-credits {
+      color: #888;
+    }
     
     /* Main Toggle */
-    .toggle-container { display: flex; justify-content: center; margin-bottom: 40px; }
+    .toggle-container { display: flex; justify-content: center; margin-bottom: 16px; }
     
     .toggle {
       display: inline-flex;
@@ -133,7 +435,6 @@
     .packs-table {
       border: 1px solid #e0e0e0;
       border-radius: 8px;
-      overflow: hidden;
     }
     
     .packs-row {
@@ -141,12 +442,17 @@
       grid-template-columns: 1.4fr 1fr 1.2fr 0.8fr;
       border-bottom: 1px solid #e0e0e0;
       cursor: pointer;
-      transition: background 0.15s;
+      transition: all 0.15s;
     }
     
-    .packs-row:last-child { border-bottom: none; }
+    .packs-row:last-child { border-bottom: none; border-radius: 0 0 8px 8px; }
     .packs-row:hover:not(.packs-header) { background: #fafafa; }
-    .packs-row.selected { background: #f5f5f5; }
+    .packs-row.selected { 
+      background: #f5f5f5; 
+      box-shadow: inset 0 0 0 2px #000;
+    }
+    
+    .packs-row.selected .pack-name { font-weight: 600; }
     
     .packs-cell {
       padding: 16px;
@@ -155,7 +461,7 @@
       align-items: center;
     }
     
-    .packs-header { background: #fafafa; }
+    .packs-header { background: #fafafa; border-radius: 8px 8px 0 0; }
     .packs-header .packs-cell {
       font-size: 11px;
       text-transform: uppercase;
@@ -164,15 +470,21 @@
       padding: 10px 16px;
     }
     
-    .pack-name { font-weight: 400; }
-    .packs-row.selected .pack-name { font-weight: 500; }
+    .pack-name { font-weight: 400; font-size: 14px; }
+    .packs-row.selected .pack-name { font-weight: 600; font-size: 16px; }
     .pack-name small { display: block; font-size: 11px; color: #888; margin-top: 2px; font-weight: 300; }
+    .packs-row.selected .pack-name small { font-size: 13px; color: #555; }
     
     .pack-credits { display: flex; flex-direction: column; gap: 2px; }
     .pack-credits .total { font-weight: 500; font-size: 15px; }
+    .packs-row.selected .pack-credits .total { font-weight: 600; font-size: 17px; }
     .pack-credits .breakdown { font-size: 11px; color: #2a7d2a; }
+    .packs-row.selected .pack-credits .breakdown { font-size: 13px; }
     
     .pack-validity { font-size: 13px; color: #888; }
+    .packs-row.selected .pack-validity { font-size: 15px; color: #555; }
+    
+    .packs-row.selected .packs-cell { color: #000; }
     
     /* Section Block */
     .section-block {
@@ -190,6 +502,7 @@
       letter-spacing: 0.5px;
       color: #888;
       border-bottom: 1px solid #e0e0e0;
+      border-radius: 8px 8px 0 0;
     }
     
     .launch-option {
@@ -300,7 +613,7 @@
       cursor: pointer;
       transition: background 0.15s;
     }
-
+    
     .summary-cta:hover { background: #333; }
 
     .summary-whatsapp {
@@ -343,10 +656,40 @@
       height: 1px;
       background: #e0e0e0;
     }
-    
+
     /* ======================== */
     /* RETAINERS VIEW           */
     /* ======================== */
+    
+    /* Retainer Benefits Line */
+    .retainer-benefits-line {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #333;
+      margin-bottom: 24px;
+    }
+    
+    .retainer-benefits-line .benefit {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .retainer-benefits-line .tick {
+      color: #2a7d2a;
+      font-size: 14px;
+    }
+    
+    @media (max-width: 600px) {
+      .retainer-benefits-line {
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+      }
+    }
     
     /* Billing Toggle */
     .billing-toggle {
@@ -357,10 +700,10 @@
     }
     
     .billing-option {
-      padding: 10px 20px;
+      padding: 12px 24px;
       border: 1px solid #e0e0e0;
       border-radius: 6px;
-      font-size: 13px;
+      font-size: 14px;
       cursor: pointer;
       transition: all 0.15s;
       display: flex;
@@ -380,74 +723,110 @@
       font-weight: 500;
     }
     
-    .billing-option.active .badge { background: #fff; color: #000; }
-    
-    /* Benefits Bar */
-    .benefits-bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      padding: 16px 20px;
-      background: #f8f8f8;
-      border-radius: 8px;
-      margin-bottom: 24px;
-    }
-    
-    .benefit-item { display: flex; align-items: center; gap: 6px; font-size: 12px; }
-    .benefit-item .icon { color: #2a7d2a; font-size: 12px; }
-    .benefit-item.annual-only { display: none; }
-    .retainers-view.annual .benefit-item.annual-only { display: flex; }
+    .billing-option.active .badge { background: #2a7d2a; color: #fff; }
     
     /* Retainers Main Grid */
     .retainers-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 16px;
       align-items: start;
+    }
+    
+    .retainer-cards-section,
+    .service-levels-section {
+      min-height: 380px;
+    }
+    
+    .grid-connector {
+      font-size: 24px;
+      font-weight: 300;
+      color: #ccc;
+      padding-top: 40px;
     }
     
     @media (max-width: 800px) {
       .retainers-grid { grid-template-columns: 1fr; }
+      .grid-connector { 
+        padding-top: 0;
+        text-align: center;
+        padding: 8px 0;
+      }
     }
     
     /* Retainer Cards */
     .retainer-cards-section {
       border: 1px solid #e0e0e0;
       border-radius: 8px;
-      overflow: hidden;
     }
     
     .retainer-card {
-      padding: 20px;
       border-bottom: 1px solid #e0e0e0;
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all 0.2s;
+      position: relative;
     }
     
-    .retainer-card:last-child { border-bottom: none; }
+    .retainer-card:last-child { border-bottom: none; border-radius: 0 0 8px 8px; }
     .retainer-card:hover { background: #fafafa; }
-    .retainer-card.selected { background: #f5f5f5; }
     
-    .retainer-card-top {
+    .retainer-card.selected { 
+      background: #f5f5f5;
+      box-shadow: inset 0 0 0 2px #000;
+    }
+    
+    .retainer-card-header {
+      padding: 16px;
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 8px;
+      align-items: center;
     }
     
-    .retainer-card .tier-name { font-size: 16px; font-weight: 500; }
+    .retainer-card .tier-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
     
-    .retainer-card .price-block { text-align: right; }
-    .retainer-card .price-main { font-size: 22px; font-weight: 500; letter-spacing: -0.5px; }
-    .retainer-card .price-main small { font-size: 12px; font-weight: 300; opacity: 0.6; }
-    .retainer-card .price-sub { font-size: 11px; color: #888; }
+    .retainer-card .tier-name { font-size: 14px; font-weight: 400; }
+    .retainer-card.selected .tier-name { font-size: 16px; font-weight: 600; }
     
-    .retainer-card .credits-info { font-size: 13px; color: #666; margin-bottom: 4px; }
-    .retainer-card .credits-info strong { color: #000; font-weight: 500; }
+    .retainer-card .tier-credits { font-size: 12px; color: #666; }
+    .retainer-card .tier-credits strong { color: #000; font-weight: 500; }
+    .retainer-card.selected .tier-credits { font-size: 13px; color: #333; }
+    
+    .retainer-card .bonus-breakdown {
+      font-size: 11px;
+      color: #2a7d2a;
+    }
+    
+    .retainer-card .tier-price { font-size: 14px; font-weight: 500; }
+    .retainer-card .tier-price small { font-size: 11px; font-weight: 300; opacity: 0.6; }
+    .retainer-card.selected .tier-price { font-size: 16px; font-weight: 600; }
+    
+    .retainer-card-details {
+      display: none;
+      padding: 0 16px 16px 16px;
+    }
+    
+    .retainer-card.selected .retainer-card-details { display: block; }
+    
+    .retainer-card .tier-subtitle { font-size: 12px; color: #666; margin-bottom: 4px; }
+    .retainer-card .price-sub { font-size: 11px; color: #888; margin-bottom: 8px; }
+    
+    .summary-line.subtle {
+      color: #888;
+      font-size: 12px;
+    }
+    
+    .retainer-card .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
     
     .retainer-card .savings {
       display: inline-block;
-      margin-top: 8px;
       font-size: 11px;
       background: #e8f5e8;
       color: #2a7d2a;
@@ -456,11 +835,20 @@
       font-weight: 500;
     }
     
+    .retainer-card .onboarding-included {
+      display: inline-block;
+      font-size: 11px;
+      background: #f0f0f0;
+      color: #555;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 400;
+    }
+    
     /* Service Levels Section */
     .service-levels-section {
       border: 1px solid #e0e0e0;
       border-radius: 8px;
-      overflow: hidden;
     }
     
     .service-level {
@@ -469,9 +857,12 @@
       transition: all 0.15s;
     }
     
-    .service-level:last-child { border-bottom: none; }
+    .service-level:last-child { border-bottom: none; border-radius: 0 0 8px 8px; }
     .service-level:hover { background: #fafafa; }
-    .service-level.selected { background: #f5f5f5; }
+    .service-level.selected { 
+      background: #f5f5f5;
+      box-shadow: inset 0 0 0 2px #000;
+    }
     
     .service-level-header {
       padding: 16px;
@@ -480,10 +871,21 @@
       align-items: center;
     }
     
+    .service-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    
     .service-level-name { font-size: 14px; font-weight: 400; }
-    .service-level.selected .service-level-name { font-weight: 500; }
-    .service-level-price { font-size: 13px; font-weight: 500; }
+    .service-level.selected .service-level-name { font-size: 16px; font-weight: 600; }
+    
+    .service-level-sub { font-size: 12px; color: #666; }
+    .service-level.selected .service-level-sub { font-size: 13px; color: #333; }
+    
+    .service-level-price { font-size: 14px; font-weight: 500; }
     .service-level-price.free { color: #2a7d2a; }
+    .service-level.selected .service-level-price { font-size: 16px; font-weight: 600; }
     
     .service-level-details {
       display: none;
@@ -501,7 +903,7 @@
     
     .service-level-features li {
       font-size: 12px;
-      color: #666;
+      color: #444;
       display: flex;
       align-items: flex-start;
       gap: 8px;
@@ -521,100 +923,167 @@
 
     /* Mobile */
     @media (max-width: 600px) {
+      .header { 
+        flex-direction: column; 
+        gap: 16px; 
+        align-items: flex-start; 
+      }
+      .header h1 { font-size: 24px; }
+      
+      .billing-toggle { 
+        flex-direction: column; 
+        gap: 8px; 
+      }
+      .billing-option { 
+        width: 100%; 
+        justify-content: center; 
+      }
+      
       .packs-row { grid-template-columns: 1fr 1fr; }
       .packs-header { display: none; }
       .packs-cell:nth-child(4) { display: none; }
+      .packs-row.selected .pack-name { font-size: 15px; }
+      .packs-row.selected .pack-credits .total { font-size: 16px; }
+      
+      .retainer-card-top { flex-direction: column; gap: 8px; }
+      .retainer-card .price-block { text-align: left; }
+      .retainer-card.selected .tier-name { font-size: 17px; }
+      
+      .retainer-nudge { flex-direction: column; gap: 8px; text-align: center; }
+      
+      .service-level.selected .service-level-name { font-size: 15px; }
+    }
+    
+    @media (max-width: 400px) {
+      .container { padding: 16px; }
+      .retainer-benefits-line { font-size: 11px; gap: 4px; }
+      .calculator-trigger span:last-child { display: none; }
     }
   </style>
 </head>
 <body>
   <div class="container">
+    <!-- Urgency Banner -->
+    <div class="urgency-banner">
+      <span class="banner-dot"></span>
+      <span class="banner-text">2026 onboarding now open</span>
+      <span class="banner-highlight">3 spots remaining</span>
+    </div>
+    
     <!-- Header -->
     <div class="header">
       <h1>Pricing <span>— Studio Intangible</span></h1>
-    </div>
-    
-    <!-- Credit Costs Block -->
-    <div class="credit-costs-block">
-      <div class="credit-costs-header">Credit Values</div>
-      <div class="credit-costs-grid">
-        <div class="credit-cost-item">
-          <div class="num">1</div>
-          <div class="text">
-            <span class="label">360° Packshot</span>
-            <span class="desc">Full rotation product spin</span>
-          </div>
-        </div>
-        <div class="credit-cost-item">
-          <div class="num">1</div>
-          <div class="text">
-            <span class="label">Subtle Animation</span>
-            <span class="desc">Hover effects & micro-motion</span>
-          </div>
-        </div>
-        <div class="credit-cost-item">
-          <div class="num">1</div>
-          <div class="text">
-            <span class="label">Color Transform</span>
-            <span class="desc">Per colorway variation</span>
-          </div>
-        </div>
-      </div>
+      <button class="calculator-trigger" id="open-calculator">
+        <span class="calc-icon">⊞</span>
+        <span>Credit calculator</span>
+      </button>
     </div>
     
     <!-- Main Toggle -->
     <div class="toggle-container">
       <div class="toggle">
-        <button class="active" data-view="packs">Credit Packs</button>
-        <button data-view="retainers">Monthly Retainers</button>
+        <button class="active" data-view="retainers">Monthly Retainers</button>
+        <button data-view="packs">Credit Packs</button>
       </div>
     </div>
     
     <!-- ======================== -->
+    <!-- RETAINERS VIEW           -->
+    <!-- ======================== -->
+    <div class="retainers-view annual active" id="retainers-view">
+      <div class="retainer-benefits-line">
+        <span class="benefit"><span class="tick">✓</span> Launch Support included</span>
+        <span class="benefit"><span class="tick">✓</span> Quarterly review calls</span>
+        <span class="benefit"><span class="tick">✓</span> Performance analytics integration</span>
+      </div>
+      
+      <div class="billing-toggle">
+        <div class="billing-option active" data-billing="annual">Pay Annually <span class="badge">2 months free</span></div>
+        <div class="billing-option" data-billing="monthly">Pay Monthly</div>
+      </div>
+      
+      <div class="retainers-grid">
+        <!-- Retainer Tiers -->
+        <div class="retainer-cards-section">
+          <div class="section-header">Select Your Tier</div>
+          <div id="retainer-cards"></div>
+        </div>
+        
+        <!-- Plus sign connector -->
+        <div class="grid-connector">+</div>
+        
+        <!-- Service Levels -->
+        <div class="service-levels-section">
+          <div class="section-header">Select Your Service Level</div>
+          <div class="service-level selected" data-service="dfy">
+            <div class="service-level-header">
+              <div class="service-info">
+                <span class="service-level-name">Full Service Implementation</span>
+                <span class="service-level-sub">We handle everything</span>
+              </div>
+              <span class="service-level-price">+€1,500/mo</span>
+            </div>
+            <div class="service-level-details">
+              <ul class="service-level-features">
+                <li>Everything in Files-Only Delivery</li>
+                <li>We upload to Shopify/Woo/Magento</li>
+                <li>Image optimisation & conversion</li>
+                <li>Hover effect implementation</li>
+                <li>Performance monitoring</li>
+                <li>Monthly performance report</li>
+                <li>Complete hands-off experience</li>
+              </ul>
+            </div>
+          </div>
+          <div class="service-level" data-service="diy">
+            <div class="service-level-header">
+              <div class="service-info">
+                <span class="service-level-name">Files-Only Delivery</span>
+                <span class="service-level-sub">You implement</span>
+              </div>
+              <span class="service-level-price free">Included</span>
+            </div>
+            <div class="service-level-details">
+              <ul class="service-level-features">
+                <li>Files delivered via Frame.io</li>
+                <li>Organized by SKU/product</li>
+                <li>Mobile + web optimised formats (WebM, MP4)</li>
+                <li>Basic implementation guide</li>
+                <li>Email support (48hr response)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Summary below -->
+      <div class="retainer-summary">
+        <div class="summary-card">
+          <div class="summary-title">Your Selection</div>
+          <div class="summary-lines" id="retainers-summary-lines"></div>
+          <div class="summary-divider"></div>
+          <div class="summary-total">
+            <span>Total</span>
+            <span id="retainers-summary-total">€82,500<small>/year</small></span>
+          </div>
+          <button class="summary-cta" id="retainers-cta">Get Started</button>
+          <div class="summary-divider-text">or</div>
+          <a href="#" class="summary-whatsapp" id="retainers-whatsapp">
+            <span>💬</span>
+            <span>Questions? Chat on WhatsApp</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================== -->
     <!-- CREDIT PACKS VIEW        -->
     <!-- ======================== -->
-    <div class="packs-view active" id="packs-view">
+    <div class="packs-view" id="packs-view">
       <div class="packs-grid">
         <div class="packs-main">
-          <div class="packs-table">
-            <div class="packs-row packs-header">
-              <div class="packs-cell">Package</div>
-              <div class="packs-cell">Price</div>
-              <div class="packs-cell">Credits</div>
-              <div class="packs-cell">Valid</div>
-            </div>
-            <div class="packs-row" data-pack="starter">
-              <div class="packs-cell"><div class="pack-name">Starter<small>Test & learn</small></div></div>
-              <div class="packs-cell">€2,500</div>
-              <div class="packs-cell">
-                <div class="pack-credits">
-                  <span class="total">10 credits</span>
-                </div>
-              </div>
-              <div class="packs-cell pack-validity">3 months</div>
-            </div>
-            <div class="packs-row selected" data-pack="growth">
-              <div class="packs-cell"><div class="pack-name">Growth<small>Most popular</small></div></div>
-              <div class="packs-cell">€5,500</div>
-              <div class="packs-cell">
-                <div class="pack-credits">
-                  <span class="total">25 credits</span>
-                  <span class="breakdown">22 + 3 free</span>
-                </div>
-              </div>
-              <div class="packs-cell pack-validity">6 months</div>
-            </div>
-            <div class="packs-row" data-pack="scale">
-              <div class="packs-cell"><div class="pack-name">Scale<small>Best value</small></div></div>
-              <div class="packs-cell">€8,250</div>
-              <div class="packs-cell">
-                <div class="pack-credits">
-                  <span class="total">50 credits</span>
-                  <span class="breakdown">33 + 17 free</span>
-                </div>
-              </div>
-              <div class="packs-cell pack-validity">12 months</div>
-            </div>
+          <div class="packs-table" id="packs-table">
+            <!-- Rendered dynamically -->
           </div>
           
           <div class="section-block">
@@ -634,9 +1103,9 @@
               <div class="launch-option-content">
                 <div class="launch-option-header">
                   <span class="launch-option-title">Launch Support Package</span>
-                  <span class="launch-option-price">+€1,250</span>
+                  <span class="launch-option-price" id="launch-support-price">+€1,250</span>
                 </div>
-                <div class="launch-option-desc">60-min creative director call, technical onboarding session, site analysis & image spec check, Slack support for pack duration</div>
+                <div class="launch-option-desc">45-min strategy, creative & technical onboarding call. Email support for credit validity period.</div>
               </div>
             </div>
           </div>
@@ -666,137 +1135,162 @@
         </div>
       </div>
     </div>
-    
-    <!-- ======================== -->
-    <!-- RETAINERS VIEW           -->
-    <!-- ======================== -->
-    <div class="retainers-view annual" id="retainers-view">
-      <div class="billing-toggle">
-        <div class="billing-option active" data-billing="annual">Pay Annually <span class="badge">2 months free</span></div>
-        <div class="billing-option" data-billing="monthly">Pay Monthly</div>
-      </div>
-      
-      <div class="benefits-bar">
-        <div class="benefit-item annual-only"><span class="icon">✓</span> 2 months free</div>
-        <div class="benefit-item"><span class="icon">✓</span> No setup fees</div>
-        <div class="benefit-item"><span class="icon">✓</span> Use credits anytime</div>
-        <div class="benefit-item"><span class="icon">✓</span> Credits roll over 1 month</div>
-        <div class="benefit-item"><span class="icon">✓</span> Priority turnaround</div>
-      </div>
-      
-      <div class="retainers-grid">
-        <!-- Retainer Tiers -->
-        <div class="retainer-cards-section">
-          <div class="section-header">Select Your Tier</div>
-          <div id="retainer-cards"></div>
+  </div>
+  
+  <!-- Calculator Modal -->
+  <div class="calculator-overlay" id="calculator-overlay">
+    <div class="calculator-modal">
+      <div class="calculator-modal-header">
+        <div>
+          <h3>Credit Calculator</h3>
+          <p class="calculator-intro">Estimate how many credits you need based on your product catalogue.</p>
         </div>
-        
-        <!-- Service Levels -->
-        <div class="service-levels-section">
-          <div class="section-header">Service Level</div>
-          <div class="service-level selected" data-service="diy">
-            <div class="service-level-header">
-              <span class="service-level-name">DIY</span>
-              <span class="service-level-price free">Included</span>
+        <button class="calculator-modal-close" id="close-calculator">×</button>
+      </div>
+      <div class="calculator-modal-body">
+        <div class="credit-calculator-grid">
+          <div class="credit-calc-item" data-asset="packshot" data-cost="1">
+            <div class="item-header">
+              <div class="credit-coins">
+                <span class="coin">1</span>
+              </div>
+              <div class="text">
+                <span class="label">360° Packshot</span>
+                <span class="credit-cost">1 credit</span>
+              </div>
             </div>
-            <div class="service-level-details">
-              <ul class="service-level-features">
-                <li>Files delivered via Frame.io</li>
-                <li>Organized by SKU/product</li>
-                <li>Multiple formats (WebM, MP4, GIF)</li>
-                <li>Basic implementation guide</li>
-                <li>Email support (48hr response)</li>
-              </ul>
-            </div>
-          </div>
-          <div class="service-level" data-service="dwy">
-            <div class="service-level-header">
-              <span class="service-level-name">Done-With-You</span>
-              <span class="service-level-price">+€450/mo</span>
-            </div>
-            <div class="service-level-details">
-              <ul class="service-level-features">
-                <li>Everything in DIY</li>
-                <li>60-min creative director onboarding</li>
-                <li>Technical implementation session</li>
-                <li>Microsoft Clarity setup</li>
-                <li>Monthly strategy call (30 min)</li>
-                <li>Slack & email support (48hr)</li>
-                <li>Custom platform implementation guide</li>
-              </ul>
+            <p class="item-desc">Full rotation spin of your product. Ideal for hero products and showing every angle.</p>
+            <div class="qty-row">
+              <span class="qty-label">How many products?</span>
+              <div class="qty-input">
+                <button class="qty-btn minus">−</button>
+                <span class="qty-value">0</span>
+                <button class="qty-btn plus">+</button>
+              </div>
             </div>
           </div>
-          <div class="service-level" data-service="dfy">
-            <div class="service-level-header">
-              <span class="service-level-name">Done-For-You</span>
-              <span class="service-level-price">+€1,500/mo</span>
+          <div class="credit-calc-item" data-asset="animation" data-cost="1">
+            <div class="item-header">
+              <div class="credit-coins">
+                <span class="coin">1</span>
+              </div>
+              <div class="text">
+                <span class="label">Subtle Animation</span>
+                <span class="credit-cost">1 credit</span>
+              </div>
             </div>
-            <div class="service-level-details">
-              <ul class="service-level-features">
-                <li>Everything in Done-With-You</li>
-                <li>We upload to Shopify/Woo/Magento</li>
-                <li>Image optimization & conversion</li>
-                <li>Hover effect implementation</li>
-                <li>Performance monitoring</li>
-                <li>Monthly performance report</li>
-                <li>Complete hands-off service</li>
-              </ul>
+            <p class="item-desc">Gentle movement on hover. Fabric sway, shimmer effects, or soft breathing motion.</p>
+            <div class="qty-row">
+              <span class="qty-label">How many products?</span>
+              <div class="qty-input">
+                <button class="qty-btn minus">−</button>
+                <span class="qty-value">0</span>
+                <button class="qty-btn plus">+</button>
+              </div>
+            </div>
+          </div>
+          <div class="credit-calc-item" data-asset="transform" data-cost="2">
+            <div class="item-header">
+              <div class="credit-coins">
+                <span class="coin"></span>
+                <span class="coin">2</span>
+              </div>
+              <div class="text">
+                <span class="label">Colour Transform</span>
+                <span class="credit-cost">2 credits</span>
+              </div>
+            </div>
+            <p class="item-desc">Morph between 2 colours or materials on hover. +1 credit per extra variant.</p>
+            <div class="qty-row">
+              <span class="qty-label">How many products?</span>
+              <div class="qty-input">
+                <button class="qty-btn minus">−</button>
+                <span class="qty-value">0</span>
+                <button class="qty-btn plus">+</button>
+              </div>
+            </div>
+          </div>
+          <div class="credit-calc-item" data-asset="interactive" data-cost="3">
+            <div class="item-header">
+              <div class="credit-coins">
+                <span class="coin"></span>
+                <span class="coin"></span>
+                <span class="coin">3</span>
+              </div>
+              <div class="text">
+                <span class="label">Interactive Hover</span>
+                <span class="credit-cost">3 credits</span>
+              </div>
+            </div>
+            <p class="item-desc">Customer-controlled interaction. Reveal details, zoom, or trigger animations.</p>
+            <div class="qty-row">
+              <span class="qty-label">How many products?</span>
+              <div class="qty-input">
+                <button class="qty-btn minus">−</button>
+                <span class="qty-value">0</span>
+                <button class="qty-btn plus">+</button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      
-      <!-- Summary below -->
-      <div class="retainer-summary">
-        <div class="summary-card">
-          <div class="summary-title">Your Selection</div>
-          <div class="summary-lines" id="retainers-summary-lines"></div>
-          <div class="summary-divider"></div>
-          <div class="summary-total">
-            <span>Total</span>
-            <span id="retainers-summary-total">€25,000<small>/year</small></span>
-          </div>
-          <button class="summary-cta" id="retainers-cta">Get Started</button>
-          <div class="summary-divider-text">or</div>
-          <a href="#" class="summary-whatsapp" id="retainers-whatsapp">
-            <span>💬</span>
-            <span>Questions? Chat on WhatsApp</span>
-          </a>
+        <div class="calculator-result empty" id="calculator-result">
+          <span class="total-credits">Select assets above to calculate credits</span>
+        </div>
+        <div class="calculator-modal-footer">
+          <button class="calculator-reset-btn" id="reset-calculator">Reset</button>
+          <button class="calculator-apply-btn" id="apply-calculator">Apply & View Packs</button>
         </div>
       </div>
     </div>
   </div>
   
   <script>
+    const SETUP_FEE = 1250;
+    
     const state = {
-      view: 'packs',
+      view: 'retainers',
       billing: 'annual',
       selectedPack: 'growth',
-      selectedRetainer: 'essentials',
-      selectedService: 'diy',
-      launchSupport: 'launch' // Default to Launch Support
+      selectedRetainer: 'scale',
+      selectedService: 'dfy',
+      launchSupport: 'launch',
+      calculator: {
+        packshot: 0,
+        animation: 0,
+        transform: 0,
+        interactive: 0
+      }
     };
     
-    // Packs: base credits shown, total is what you get
+    const assetCosts = {
+      packshot: 1,
+      animation: 1,
+      transform: 2,
+      interactive: 3
+    };
+    
+    // Packs: Scale first, then Growth, then Starter
     const packs = {
-      starter: { name: 'Starter Pack', base: 10, bonus: 0, total: 10, price: 2500, validity: 3 },
-      growth: { name: 'Growth Pack', base: 22, bonus: 3, total: 25, price: 5500, validity: 6 },
-      scale: { name: 'Scale Pack', base: 33, bonus: 17, total: 50, price: 8250, validity: 12 }
+      scale: { name: 'Scale', subtitle: 'Full catalogue transformation', base: 33, bonus: 17, total: 50, price: 8250, validity: 12 },
+      growth: { name: 'Growth', subtitle: 'Best-seller overhaul', base: 22, bonus: 3, total: 25, price: 5500, validity: 6 },
+      starter: { name: 'Starter', subtitle: 'Test & learn', base: 10, bonus: 0, total: 10, price: 2500, validity: 3 }
     };
     
-    // Retainers: monthly credits use same logic
+    // Retainers: Scale first (same tiers as packs)
     const retainers = {
-      essentials: { 
-        name: 'Essentials', 
-        monthlyBase: 10, monthlyBonus: 0, monthlyTotal: 10,
-        monthlyPrice: 2500, 
-        annualPrice: 25000, 
-        annualCredits: 120, 
-        annualSavings: 5000, 
-        minMonths: 3 
+      scale: { 
+        name: 'Scale', 
+        subtitle: 'Full catalogue transformation',
+        monthlyBase: 33, monthlyBonus: 17, monthlyTotal: 50,
+        monthlyPrice: 8250, 
+        annualPrice: 82500, 
+        annualCredits: 600,
+        annualSavings: 16500, 
+        minMonths: 12 
       },
       growth: { 
         name: 'Growth', 
+        subtitle: 'Best-seller overhaul',
         monthlyBase: 22, monthlyBonus: 3, monthlyTotal: 25,
         monthlyPrice: 5500, 
         annualPrice: 55000, 
@@ -804,26 +1298,26 @@
         annualSavings: 11000, 
         minMonths: 6 
       },
-      scale: { 
-        name: 'Scale', 
-        monthlyBase: 33, monthlyBonus: 17, monthlyTotal: 50,
-        monthlyPrice: 8250, 
-        annualPrice: 82500, 
-        annualCredits: 600,
-        annualSavings: 16500, 
-        minMonths: 12 
+      starter: { 
+        name: 'Starter', 
+        subtitle: 'Test & learn',
+        monthlyBase: 10, monthlyBonus: 0, monthlyTotal: 10,
+        monthlyPrice: 2500, 
+        annualPrice: 25000, 
+        annualCredits: 120, 
+        annualSavings: 5000, 
+        minMonths: 3 
       }
     };
     
     const services = {
-      diy: { name: 'DIY', price: 0 },
-      dwy: { name: 'Done-With-You', price: 450 },
-      dfy: { name: 'Done-For-You', price: 1500 }
+      diy: { name: 'Files-Only Delivery', price: 0 },
+      dfy: { name: 'Full Service Implementation', price: 1500 }
     };
 
     // WhatsApp & Calendar Links
     const WHATSAPP_NUMBER = '33658660977';
-    const CALENDAR_LINK = 'https://cal.com/studio-intangible'; // Update with your actual Cal.com link
+    const CALENDAR_LINK = 'https://cal.com/contact-in.tangible/first-meeting';
 
     // Stripe Payment Links (to be added)
     const STRIPE_LINKS = {
@@ -836,10 +1330,12 @@
         scale_launch: 'https://buy.stripe.com/xxx_scale_launch'
       },
       retainers: {
-        essentials_monthly: 'https://buy.stripe.com/xxx_essentials_monthly',
-        essentials_annual: 'https://buy.stripe.com/xxx_essentials_annual',
+        starter_monthly: 'https://buy.stripe.com/xxx_starter_monthly',
+        starter_annual: 'https://buy.stripe.com/xxx_starter_annual',
         growth_monthly: 'https://buy.stripe.com/xxx_growth_monthly',
-        growth_annual: 'https://buy.stripe.com/xxx_growth_annual'
+        growth_annual: 'https://buy.stripe.com/xxx_growth_annual',
+        scale_monthly: 'https://buy.stripe.com/xxx_scale_monthly',
+        scale_annual: 'https://buy.stripe.com/xxx_scale_annual'
       }
     };
 
@@ -855,10 +1351,10 @@
         message += `• Price: €${pack.price.toLocaleString()}\n`;
 
         if (state.launchSupport === 'launch') {
-          message += `• Launch Support: Yes (+€1,250)\n`;
-          message += `• Total: €${(pack.price + 1250).toLocaleString()}\n`;
+          message += `• Launch Support: Yes (+€${SETUP_FEE.toLocaleString()})\n`;
+          message += `• Total: €${(pack.price + SETUP_FEE).toLocaleString()}\n`;
         } else {
-          message += `• Support: Self-Service (included)\n`;
+          message += `• Support: Files-Only (included)\n`;
           message += `• Total: €${pack.price.toLocaleString()}\n`;
         }
       } else {
@@ -893,7 +1389,7 @@
           }
           message += `• Minimum commitment: ${r.minMonths} months\n`;
         }
-        message += `• Setup fees: Waived (€1,250 value)\n`;
+        message += `• Launch Support: Included (€${SETUP_FEE.toLocaleString()} value)\n`;
       }
 
       message += `\nI'd like to learn more about getting started!`;
@@ -912,11 +1408,89 @@
     const mainToggle = document.querySelectorAll('.toggle button');
     const packsView = document.getElementById('packs-view');
     const retainersView = document.getElementById('retainers-view');
-    const packRows = document.querySelectorAll('.packs-row[data-pack]');
+    const packsTableContainer = document.getElementById('packs-table');
     const launchOptions = document.querySelectorAll('.launch-option');
     const billingOptions = document.querySelectorAll('.billing-option');
     const serviceLevels = document.querySelectorAll('.service-level');
     const retainerCardsContainer = document.getElementById('retainer-cards');
+    const calculatorResult = document.getElementById('calculator-result');
+    const resetBtn = document.getElementById('reset-calculator');
+    const calculatorOverlay = document.getElementById('calculator-overlay');
+    const openCalculatorBtn = document.getElementById('open-calculator');
+    const closeCalculatorBtn = document.getElementById('close-calculator');
+    const applyCalculatorBtn = document.getElementById('apply-calculator');
+    // Calculator modal
+    openCalculatorBtn.addEventListener('click', () => {
+      calculatorOverlay.classList.add('active');
+    });
+    
+    closeCalculatorBtn.addEventListener('click', () => {
+      calculatorOverlay.classList.remove('active');
+    });
+    
+    calculatorOverlay.addEventListener('click', (e) => {
+      if (e.target === calculatorOverlay) {
+        calculatorOverlay.classList.remove('active');
+      }
+    });
+    
+    applyCalculatorBtn.addEventListener('click', () => {
+      calculatorOverlay.classList.remove('active');
+      // Switch to packs view
+      state.view = 'packs';
+      mainToggle.forEach(b => b.classList.toggle('active', b.dataset.view === 'packs'));
+      packsView.classList.add('active');
+      retainersView.classList.remove('active');
+    });
+    
+    // Render packs table (Scale first)
+    function renderPacksTable() {
+      const order = ['scale', 'growth', 'starter'];
+      let html = `
+        <div class="packs-row packs-header">
+          <div class="packs-cell">Package</div>
+          <div class="packs-cell">Price</div>
+          <div class="packs-cell">Credits</div>
+          <div class="packs-cell">Valid</div>
+        </div>`;
+      
+      for (const key of order) {
+        const p = packs[key];
+        const isSelected = state.selectedPack === key;
+        const breakdownHtml = p.bonus > 0 
+          ? `<span class="breakdown">${p.base} + ${p.bonus} free</span>` 
+          : '';
+        
+        html += `
+          <div class="packs-row ${isSelected ? 'selected' : ''}" data-pack="${key}">
+            <div class="packs-cell"><div class="pack-name">${p.name}<small>${p.subtitle}</small></div></div>
+            <div class="packs-cell">€${p.price.toLocaleString()}</div>
+            <div class="packs-cell">
+              <div class="pack-credits">
+                <span class="total">${p.total} credits</span>
+                ${breakdownHtml}
+              </div>
+            </div>
+            <div class="packs-cell pack-validity">${p.validity} months</div>
+          </div>`;
+      }
+      
+      packsTableContainer.innerHTML = html;
+      
+      // Add event listeners to pack rows
+      document.querySelectorAll('.packs-row[data-pack]').forEach(row => {
+        row.addEventListener('click', () => {
+          state.selectedPack = row.dataset.pack;
+          document.querySelectorAll('.packs-row[data-pack]').forEach(r => 
+            r.classList.toggle('selected', r === row)
+          );
+          updatePacksSummary();
+        });
+      });
+      
+      // Update launch support price display
+      document.getElementById('launch-support-price').textContent = `+€${SETUP_FEE.toLocaleString()}`;
+    }
     
     // Main toggle
     mainToggle.forEach(btn => {
@@ -925,15 +1499,6 @@
         mainToggle.forEach(b => b.classList.toggle('active', b === btn));
         packsView.classList.toggle('active', state.view === 'packs');
         retainersView.classList.toggle('active', state.view === 'retainers');
-      });
-    });
-    
-    // Pack selection
-    packRows.forEach(row => {
-      row.addEventListener('click', () => {
-        state.selectedPack = row.dataset.pack;
-        packRows.forEach(r => r.classList.toggle('selected', r === row));
-        updatePacksSummary();
       });
     });
     
@@ -969,26 +1534,98 @@
     // Switch to retainer
     document.getElementById('switch-to-retainer').addEventListener('click', (e) => {
       e.preventDefault();
-      mainToggle[1].click();
+      mainToggle[0].click();
     });
-
-    // WhatsApp buttons
-    document.getElementById('packs-whatsapp').addEventListener('click', (e) => {
-      e.preventDefault();
-      openWhatsApp();
+    
+    // Credit Calculator
+    document.querySelectorAll('.credit-calc-item').forEach(item => {
+      const asset = item.dataset.asset;
+      const minusBtn = item.querySelector('.minus');
+      const plusBtn = item.querySelector('.plus');
+      const valueEl = item.querySelector('.qty-value');
+      
+      minusBtn.addEventListener('click', () => {
+        if (state.calculator[asset] > 0) {
+          state.calculator[asset]--;
+          valueEl.textContent = state.calculator[asset];
+          updateCalculatorResult();
+        }
+      });
+      
+      plusBtn.addEventListener('click', () => {
+        state.calculator[asset]++;
+        valueEl.textContent = state.calculator[asset];
+        updateCalculatorResult();
+      });
     });
-
-    document.getElementById('retainers-whatsapp').addEventListener('click', (e) => {
-      e.preventDefault();
-      openWhatsApp();
+    
+    // Reset calculator
+    resetBtn.addEventListener('click', () => {
+      Object.keys(state.calculator).forEach(key => {
+        state.calculator[key] = 0;
+      });
+      document.querySelectorAll('.qty-value').forEach(el => {
+        el.textContent = '0';
+      });
+      updateCalculatorResult();
     });
-
-    // Render retainer cards
+    
+    function updateCalculatorResult() {
+      let totalCredits = 0;
+      Object.keys(state.calculator).forEach(key => {
+        totalCredits += state.calculator[key] * assetCosts[key];
+      });
+      
+      // Show/hide reset button
+      resetBtn.classList.toggle('visible', totalCredits > 0);
+      
+      if (totalCredits === 0) {
+        calculatorResult.innerHTML = '<span class="total-credits">Select assets above to calculate credits</span>';
+        calculatorResult.classList.add('empty');
+        return;
+      }
+      
+      calculatorResult.classList.remove('empty');
+      
+      // Determine recommendation (always round up)
+      let recommendation = '';
+      let recommendedPack = '';
+      
+      if (totalCredits <= 10) {
+        recommendation = 'Starter Pack (10 credits)';
+        recommendedPack = 'starter';
+      } else if (totalCredits <= 25) {
+        recommendation = 'Growth Pack (25 credits)';
+        recommendedPack = 'growth';
+      } else if (totalCredits <= 50) {
+        recommendation = 'Scale Pack (50 credits)';
+        recommendedPack = 'scale';
+      } else {
+        recommendation = 'Scale Pack — contact us for larger projects';
+        recommendedPack = 'scale';
+      }
+      
+      calculatorResult.innerHTML = `
+        <span class="total-credits"><strong>${totalCredits}</strong> credits needed</span>
+        <span class="recommendation">Recommended: <strong>${recommendation}</strong></span>
+      `;
+      
+      // Auto-select the recommended pack
+      state.selectedPack = recommendedPack;
+      document.querySelectorAll('.packs-row[data-pack]').forEach(r => 
+        r.classList.toggle('selected', r.dataset.pack === recommendedPack)
+      );
+      updatePacksSummary();
+    }
+    
+    // Render retainer cards (Scale first)
     function renderRetainerCards() {
       const isAnnual = state.billing === 'annual';
+      const order = ['scale', 'growth', 'starter'];
       let html = '';
       
-      for (const [key, r] of Object.entries(retainers)) {
+      for (const key of order) {
+        const r = retainers[key];
         const isSelected = state.selectedRetainer === key;
         const priceDisplay = isAnnual ? Math.round(r.annualPrice / 12) : r.monthlyPrice;
         const creditsDisplay = isAnnual ? r.annualCredits : r.monthlyTotal;
@@ -996,23 +1633,31 @@
         // Build breakdown string for monthly view
         let breakdownHtml = '';
         if (!isAnnual && r.monthlyBonus > 0) {
-          breakdownHtml = `<div style="font-size: 11px; color: #2a7d2a; margin-top: 2px;">${r.monthlyBase} + ${r.monthlyBonus} free</div>`;
+          breakdownHtml = `<span class="bonus-breakdown">(${r.monthlyBase} + ${r.monthlyBonus} free)</span>`;
         }
+        
+        // Build badges (only shown when expanded)
+        let badgesHtml = '<div class="badges">';
+        badgesHtml += `<span class="onboarding-included">€${SETUP_FEE.toLocaleString()} Launch Support included</span>`;
+        if (isAnnual) {
+          badgesHtml += `<span class="savings">Save €${r.annualSavings.toLocaleString()}</span>`;
+        }
+        badgesHtml += '</div>';
         
         html += `
           <div class="retainer-card ${isSelected ? 'selected' : ''}" data-retainer="${key}">
-            <div class="retainer-card-top">
-              <div class="tier-name">${r.name}</div>
-              <div class="price-block">
-                <div class="price-main">€${priceDisplay.toLocaleString()}<small>/mo</small></div>
-                <div class="price-sub">${isAnnual ? `€${r.annualPrice.toLocaleString()} billed annually` : `${r.minMonths}-month minimum`}</div>
+            <div class="retainer-card-header">
+              <div class="tier-info">
+                <span class="tier-name">${r.name}</span>
+                <span class="tier-credits"><strong>${creditsDisplay} credits</strong> ${isAnnual ? '/year' : '/mo'} ${breakdownHtml}</span>
               </div>
+              <div class="tier-price">€${priceDisplay.toLocaleString()}<small>/mo</small></div>
             </div>
-            <div class="credits-info">
-              <strong>${creditsDisplay} credits</strong> ${isAnnual ? 'for the year' : 'per month'}
-              ${breakdownHtml}
+            <div class="retainer-card-details">
+              <div class="tier-subtitle">${r.subtitle}</div>
+              <div class="price-sub">${isAnnual ? `€${r.annualPrice.toLocaleString()} billed annually` : `${r.minMonths}-month minimum`}</div>
+              ${badgesHtml}
             </div>
-            ${isAnnual ? `<span class="savings">Save €${r.annualSavings.toLocaleString()}</span>` : ''}
           </div>`;
       }
       
@@ -1039,19 +1684,17 @@
         creditsLabel = `${pack.total} credits (${pack.base} + ${pack.bonus} free)`;
       }
       
-      lines.push({ label: `${pack.name}`, value: `€${pack.price.toLocaleString()}` });
+      lines.push({ label: pack.name, value: `€${pack.price.toLocaleString()}` });
       lines.push({ label: creditsLabel, value: '', subtle: true });
       
       if (state.launchSupport === 'launch') {
-        lines.push({ label: 'Launch Support Package', value: '+€1,250' });
-        total += 1250;
+        lines.push({ label: 'Launch Support Package', value: `+€${SETUP_FEE.toLocaleString()}` });
+        total += SETUP_FEE;
       }
       
       document.getElementById('packs-summary-lines').innerHTML = lines.map(l => {
-        if (l.subtle) {
-          return `<div class="summary-line" style="color: #888; font-size: 12px;"><span>${l.label}</span><span>${l.value}</span></div>`;
-        }
-        return `<div class="summary-line"><span>${l.label}</span><span>${l.value}</span></div>`;
+        const classes = l.subtle ? 'summary-line subtle' : 'summary-line';
+        return `<div class="${classes}"><span>${l.label}</span><span>${l.value}</span></div>`;
       }).join('');
       
       document.getElementById('packs-summary-total').textContent = `€${total.toLocaleString()}`;
@@ -1076,7 +1719,7 @@
           total += serviceTotal;
         }
         
-        lines.push({ label: 'Setup fees', value: '€0', strike: '€1,250', green: true });
+        lines.push({ label: 'Launch Support', value: '€0', strike: `€${SETUP_FEE.toLocaleString()}`, green: true });
         document.getElementById('retainers-summary-total').innerHTML = `€${total.toLocaleString()}<small>/year</small>`;
       } else {
         lines.push({ label: `${r.name} Retainer`, value: `€${r.monthlyPrice.toLocaleString()}` });
@@ -1094,20 +1737,42 @@
           total += service.price;
         }
         
-        lines.push({ label: 'Setup fees', value: '€0', strike: '€1,250', green: true });
+        lines.push({ label: 'Launch Support', value: '€0', strike: `€${SETUP_FEE.toLocaleString()}`, green: true });
         document.getElementById('retainers-summary-total').innerHTML = `€${total.toLocaleString()}<small>/mo</small>`;
       }
       
       document.getElementById('retainers-summary-lines').innerHTML = lines.map(l => {
         let valueHtml = l.strike ? `<span class="strike">${l.strike}</span>${l.value}` : l.value;
-        if (l.subtle) {
-          return `<div class="summary-line" style="color: #888; font-size: 12px;"><span>${l.label}</span><span>${valueHtml}</span></div>`;
-        }
-        return `<div class="summary-line ${l.green ? 'green' : ''}"><span>${l.label}</span><span>${valueHtml}</span></div>`;
+        let classes = 'summary-line';
+        if (l.subtle) classes += ' subtle';
+        if (l.green) classes += ' green';
+        return `<div class="${classes}"><span>${l.label}</span><span>${valueHtml}</span></div>`;
       }).join('');
     }
-    
+
+    // WhatsApp button event listeners
+    document.getElementById('packs-whatsapp').addEventListener('click', (e) => {
+      e.preventDefault();
+      openWhatsApp();
+    });
+
+    document.getElementById('retainers-whatsapp').addEventListener('click', (e) => {
+      e.preventDefault();
+      openWhatsApp();
+    });
+
+    // Get Started button event listeners - redirect to Cal.com
+    // TODO: Add Stripe logic later based on selection
+    document.getElementById('packs-cta').addEventListener('click', () => {
+      window.location.href = CALENDAR_LINK;
+    });
+
+    document.getElementById('retainers-cta').addEventListener('click', () => {
+      window.location.href = CALENDAR_LINK;
+    });
+
     // Init
+    renderPacksTable();
     renderRetainerCards();
     updatePacksSummary();
     updateRetainersSummary();
