@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studio Intangible — Pricing</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      background: #fff;
+      color: #000;
+      line-height: 1.5;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+    
+    /* Header */
+    .header { margin-bottom: 32px; }
+    .header h1 { font-size: 32px; font-weight: 300; letter-spacing: -0.5px; }
+    .header h1 span { opacity: 0.4; }
+    
+    /* Credit Costs Block */
+    .credit-costs-block {
+      margin-bottom: 40px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    .credit-costs-header {
+      padding: 12px 20px;
+      background: #fafafa;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #888;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .credit-costs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    
+    @media (max-width: 600px) {
+      .credit-costs-grid { grid-template-columns: 1fr; }
+    }
+    
+    .credit-cost-item {
+      padding: 20px;
+      border-right: 1px solid #e0e0e0;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    
+    .credit-cost-item:last-child { border-right: none; }
+    
+    @media (max-width: 600px) {
+      .credit-cost-item { border-right: none; border-bottom: 1px solid #e0e0e0; }
+      .credit-cost-item:last-child { border-bottom: none; }
+    }
+    
+    .credit-cost-item .num {
+      width: 40px;
+      height: 40px;
+      border: 1.5px solid #000;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+    
+    .credit-cost-item .text { display: flex; flex-direction: column; gap: 2px; }
+    .credit-cost-item .label { font-size: 14px; font-weight: 500; }
+    .credit-cost-item .desc { font-size: 12px; color: #888; }
+    
+    /* Main Toggle */
+    .toggle-container { display: flex; justify-content: center; margin-bottom: 40px; }
+    
+    .toggle {
+      display: inline-flex;
+      border: 1px solid #000;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    
+    .toggle button {
+      padding: 12px 32px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 400;
+      border: none;
+      background: #fff;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .toggle button.active { background: #000; color: #fff; }
+    .toggle button:not(.active):hover { background: #f5f5f5; }
+    
+    /* View containers */
+    .packs-view, .retainers-view { display: none; }
+    .packs-view.active, .retainers-view.active { display: block; }
+    
+    /* ======================== */
+    /* PACKS VIEW               */
+    /* ======================== */
+    
+    .packs-grid {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 40px;
+      align-items: start;
+    }
+    
+    @media (max-width: 900px) {
+      .packs-grid { grid-template-columns: 1fr; }
+    }
+    
+    /* Packs Table */
+    .packs-table {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    .packs-row {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1.2fr 0.8fr;
+      border-bottom: 1px solid #e0e0e0;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    
+    .packs-row:last-child { border-bottom: none; }
+    .packs-row:hover:not(.packs-header) { background: #fafafa; }
+    .packs-row.selected { background: #f5f5f5; }
+    
+    .packs-cell {
+      padding: 16px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .packs-header { background: #fafafa; }
+    .packs-header .packs-cell {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #888;
+      padding: 10px 16px;
+    }
+    
+    .pack-name { font-weight: 400; }
+    .packs-row.selected .pack-name { font-weight: 500; }
+    .pack-name small { display: block; font-size: 11px; color: #888; margin-top: 2px; font-weight: 300; }
+    
+    .pack-credits { display: flex; flex-direction: column; gap: 2px; }
+    .pack-credits .total { font-weight: 500; font-size: 15px; }
+    .pack-credits .breakdown { font-size: 11px; color: #2a7d2a; }
+    
+    .pack-validity { font-size: 13px; color: #888; }
+    
+    /* Section Block */
+    .section-block {
+      margin-top: 24px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    .section-header {
+      padding: 12px 16px;
+      background: #fafafa;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #888;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .launch-option {
+      padding: 16px;
+      border-bottom: 1px solid #e0e0e0;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      gap: 12px;
+    }
+    
+    .launch-option:last-child { border-bottom: none; }
+    .launch-option:hover { background: #fafafa; }
+    .launch-option.selected { background: #f5f5f5; }
+    
+    .launch-option .radio {
+      width: 18px;
+      height: 18px;
+      border: 2px solid #ccc;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+    
+    .launch-option.selected .radio { border-color: #000; }
+    .launch-option.selected .radio::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: #000;
+      border-radius: 50%;
+    }
+    
+    .launch-option-content { flex: 1; }
+    .launch-option-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+    .launch-option-title { font-size: 14px; font-weight: 400; }
+    .launch-option.selected .launch-option-title { font-weight: 500; }
+    .launch-option-price { font-size: 13px; font-weight: 500; }
+    .launch-option-price.free { color: #2a7d2a; }
+    .launch-option-desc { font-size: 12px; color: #888; line-height: 1.5; }
+    
+    /* Retainer Nudge */
+    .retainer-nudge {
+      margin-top: 20px;
+      padding: 16px;
+      background: #f8f8f8;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+    }
+    
+    .retainer-nudge a { color: #000; font-weight: 500; }
+    
+    /* Summary Card */
+    .summary-card {
+      border: 1.5px solid #000;
+      border-radius: 8px;
+      padding: 20px;
+    }
+    
+    .summary-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #888;
+      margin-bottom: 16px;
+    }
+    
+    .summary-lines { margin-bottom: 16px; }
+    
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+    
+    .summary-line.green { color: #2a7d2a; }
+    .summary-line .strike { text-decoration: line-through; opacity: 0.4; margin-right: 6px; }
+    
+    .summary-divider { height: 1px; background: #e0e0e0; margin: 16px 0; }
+    
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+    
+    .summary-total small { font-size: 13px; font-weight: 300; opacity: 0.6; }
+    
+    .summary-cta {
+      width: 100%;
+      padding: 14px;
+      background: #000;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    
+    .summary-cta:hover { background: #333; }
+    
+    /* ======================== */
+    /* RETAINERS VIEW           */
+    /* ======================== */
+    
+    /* Billing Toggle */
+    .billing-toggle {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    
+    .billing-option {
+      padding: 10px 20px;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .billing-option:hover { border-color: #ccc; }
+    .billing-option.active { border-color: #000; background: #000; color: #fff; }
+    
+    .billing-option .badge {
+      font-size: 10px;
+      background: #2a7d2a;
+      color: #fff;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-weight: 500;
+    }
+    
+    .billing-option.active .badge { background: #fff; color: #000; }
+    
+    /* Benefits Bar */
+    .benefits-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding: 16px 20px;
+      background: #f8f8f8;
+      border-radius: 8px;
+      margin-bottom: 24px;
+    }
+    
+    .benefit-item { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+    .benefit-item .icon { color: #2a7d2a; font-size: 12px; }
+    .benefit-item.annual-only { display: none; }
+    .retainers-view.annual .benefit-item.annual-only { display: flex; }
+    
+    /* Retainers Main Grid */
+    .retainers-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    
+    @media (max-width: 800px) {
+      .retainers-grid { grid-template-columns: 1fr; }
+    }
+    
+    /* Retainer Cards */
+    .retainer-cards-section {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    .retainer-card {
+      padding: 20px;
+      border-bottom: 1px solid #e0e0e0;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    
+    .retainer-card:last-child { border-bottom: none; }
+    .retainer-card:hover { background: #fafafa; }
+    .retainer-card.selected { background: #f5f5f5; }
+    
+    .retainer-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+    
+    .retainer-card .tier-name { font-size: 16px; font-weight: 500; }
+    
+    .retainer-card .price-block { text-align: right; }
+    .retainer-card .price-main { font-size: 22px; font-weight: 500; letter-spacing: -0.5px; }
+    .retainer-card .price-main small { font-size: 12px; font-weight: 300; opacity: 0.6; }
+    .retainer-card .price-sub { font-size: 11px; color: #888; }
+    
+    .retainer-card .credits-info { font-size: 13px; color: #666; margin-bottom: 4px; }
+    .retainer-card .credits-info strong { color: #000; font-weight: 500; }
+    
+    .retainer-card .savings {
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 11px;
+      background: #e8f5e8;
+      color: #2a7d2a;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    
+    /* Service Levels Section */
+    .service-levels-section {
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    .service-level {
+      border-bottom: 1px solid #e0e0e0;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    
+    .service-level:last-child { border-bottom: none; }
+    .service-level:hover { background: #fafafa; }
+    .service-level.selected { background: #f5f5f5; }
+    
+    .service-level-header {
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .service-level-name { font-size: 14px; font-weight: 400; }
+    .service-level.selected .service-level-name { font-weight: 500; }
+    .service-level-price { font-size: 13px; font-weight: 500; }
+    .service-level-price.free { color: #2a7d2a; }
+    
+    .service-level-details {
+      display: none;
+      padding: 0 16px 16px 16px;
+    }
+    
+    .service-level.selected .service-level-details { display: block; }
+    
+    .service-level-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    
+    .service-level-features li {
+      font-size: 12px;
+      color: #666;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    
+    .service-level-features li::before {
+      content: '✓';
+      color: #2a7d2a;
+      font-size: 11px;
+      margin-top: 1px;
+    }
+    
+    /* Retainer Summary */
+    .retainer-summary {
+      margin-top: 24px;
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+      .packs-row { grid-template-columns: 1fr 1fr; }
+      .packs-header { display: none; }
+      .packs-cell:nth-child(4) { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>Pricing <span>— Studio Intangible</span></h1>
+    </div>
+    
+    <!-- Credit Costs Block -->
+    <div class="credit-costs-block">
+      <div class="credit-costs-header">Credit Values</div>
+      <div class="credit-costs-grid">
+        <div class="credit-cost-item">
+          <div class="num">1</div>
+          <div class="text">
+            <span class="label">360° Packshot</span>
+            <span class="desc">Full rotation product spin</span>
+          </div>
+        </div>
+        <div class="credit-cost-item">
+          <div class="num">1</div>
+          <div class="text">
+            <span class="label">Subtle Animation</span>
+            <span class="desc">Hover effects & micro-motion</span>
+          </div>
+        </div>
+        <div class="credit-cost-item">
+          <div class="num">1</div>
+          <div class="text">
+            <span class="label">Color Transform</span>
+            <span class="desc">Per colorway variation</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Main Toggle -->
+    <div class="toggle-container">
+      <div class="toggle">
+        <button class="active" data-view="packs">Credit Packs</button>
+        <button data-view="retainers">Monthly Retainers</button>
+      </div>
+    </div>
+    
+    <!-- ======================== -->
+    <!-- CREDIT PACKS VIEW        -->
+    <!-- ======================== -->
+    <div class="packs-view active" id="packs-view">
+      <div class="packs-grid">
+        <div class="packs-main">
+          <div class="packs-table">
+            <div class="packs-row packs-header">
+              <div class="packs-cell">Package</div>
+              <div class="packs-cell">Price</div>
+              <div class="packs-cell">Credits</div>
+              <div class="packs-cell">Valid</div>
+            </div>
+            <div class="packs-row" data-pack="starter">
+              <div class="packs-cell"><div class="pack-name">Starter<small>Test & learn</small></div></div>
+              <div class="packs-cell">€2,500</div>
+              <div class="packs-cell">
+                <div class="pack-credits">
+                  <span class="total">10 credits</span>
+                </div>
+              </div>
+              <div class="packs-cell pack-validity">3 months</div>
+            </div>
+            <div class="packs-row selected" data-pack="growth">
+              <div class="packs-cell"><div class="pack-name">Growth<small>Most popular</small></div></div>
+              <div class="packs-cell">€5,500</div>
+              <div class="packs-cell">
+                <div class="pack-credits">
+                  <span class="total">25 credits</span>
+                  <span class="breakdown">22 + 3 free</span>
+                </div>
+              </div>
+              <div class="packs-cell pack-validity">6 months</div>
+            </div>
+            <div class="packs-row" data-pack="scale">
+              <div class="packs-cell"><div class="pack-name">Scale<small>Best value</small></div></div>
+              <div class="packs-cell">€8,250</div>
+              <div class="packs-cell">
+                <div class="pack-credits">
+                  <span class="total">50 credits</span>
+                  <span class="breakdown">33 + 17 free</span>
+                </div>
+              </div>
+              <div class="packs-cell pack-validity">12 months</div>
+            </div>
+          </div>
+          
+          <div class="section-block">
+            <div class="section-header">Implementation Support</div>
+            <div class="launch-option" data-support="diy">
+              <div class="radio"></div>
+              <div class="launch-option-content">
+                <div class="launch-option-header">
+                  <span class="launch-option-title">Self-Service</span>
+                  <span class="launch-option-price free">Included</span>
+                </div>
+                <div class="launch-option-desc">Files delivered via Frame.io, basic implementation guide, email support (48hr)</div>
+              </div>
+            </div>
+            <div class="launch-option selected" data-support="launch">
+              <div class="radio"></div>
+              <div class="launch-option-content">
+                <div class="launch-option-header">
+                  <span class="launch-option-title">Launch Support Package</span>
+                  <span class="launch-option-price">+€1,250</span>
+                </div>
+                <div class="launch-option-desc">60-min creative director call, technical onboarding session, site analysis & image spec check, Slack support for pack duration</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="retainer-nudge">
+            <span>Need ongoing support? Retainers include launch support free.</span>
+            <a href="#" id="switch-to-retainer">Switch to Retainer →</a>
+          </div>
+        </div>
+        
+        <div class="sidebar">
+          <div class="summary-card">
+            <div class="summary-title">Your Selection</div>
+            <div class="summary-lines" id="packs-summary-lines"></div>
+            <div class="summary-divider"></div>
+            <div class="summary-total">
+              <span>Total</span>
+              <span id="packs-summary-total">€6,750</span>
+            </div>
+            <button class="summary-cta">Get Started</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- ======================== -->
+    <!-- RETAINERS VIEW           -->
+    <!-- ======================== -->
+    <div class="retainers-view annual" id="retainers-view">
+      <div class="billing-toggle">
+        <div class="billing-option active" data-billing="annual">Pay Annually <span class="badge">2 months free</span></div>
+        <div class="billing-option" data-billing="monthly">Pay Monthly</div>
+      </div>
+      
+      <div class="benefits-bar">
+        <div class="benefit-item annual-only"><span class="icon">✓</span> 2 months free</div>
+        <div class="benefit-item"><span class="icon">✓</span> No setup fees</div>
+        <div class="benefit-item"><span class="icon">✓</span> Use credits anytime</div>
+        <div class="benefit-item"><span class="icon">✓</span> Credits roll over 1 month</div>
+        <div class="benefit-item"><span class="icon">✓</span> Priority turnaround</div>
+      </div>
+      
+      <div class="retainers-grid">
+        <!-- Retainer Tiers -->
+        <div class="retainer-cards-section">
+          <div class="section-header">Select Your Tier</div>
+          <div id="retainer-cards"></div>
+        </div>
+        
+        <!-- Service Levels -->
+        <div class="service-levels-section">
+          <div class="section-header">Service Level</div>
+          <div class="service-level selected" data-service="diy">
+            <div class="service-level-header">
+              <span class="service-level-name">DIY</span>
+              <span class="service-level-price free">Included</span>
+            </div>
+            <div class="service-level-details">
+              <ul class="service-level-features">
+                <li>Files delivered via Frame.io</li>
+                <li>Organized by SKU/product</li>
+                <li>Multiple formats (WebM, MP4, GIF)</li>
+                <li>Basic implementation guide</li>
+                <li>Email support (48hr response)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="service-level" data-service="dwy">
+            <div class="service-level-header">
+              <span class="service-level-name">Done-With-You</span>
+              <span class="service-level-price">+€450/mo</span>
+            </div>
+            <div class="service-level-details">
+              <ul class="service-level-features">
+                <li>Everything in DIY</li>
+                <li>60-min creative director onboarding</li>
+                <li>Technical implementation session</li>
+                <li>Microsoft Clarity setup</li>
+                <li>Monthly strategy call (30 min)</li>
+                <li>Slack & email support (48hr)</li>
+                <li>Custom platform implementation guide</li>
+              </ul>
+            </div>
+          </div>
+          <div class="service-level" data-service="dfy">
+            <div class="service-level-header">
+              <span class="service-level-name">Done-For-You</span>
+              <span class="service-level-price">+€1,500/mo</span>
+            </div>
+            <div class="service-level-details">
+              <ul class="service-level-features">
+                <li>Everything in Done-With-You</li>
+                <li>We upload to Shopify/Woo/Magento</li>
+                <li>Image optimization & conversion</li>
+                <li>Hover effect implementation</li>
+                <li>Performance monitoring</li>
+                <li>Monthly performance report</li>
+                <li>Complete hands-off service</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Summary below -->
+      <div class="retainer-summary">
+        <div class="summary-card">
+          <div class="summary-title">Your Selection</div>
+          <div class="summary-lines" id="retainers-summary-lines"></div>
+          <div class="summary-divider"></div>
+          <div class="summary-total">
+            <span>Total</span>
+            <span id="retainers-summary-total">€25,000<small>/year</small></span>
+          </div>
+          <button class="summary-cta">Get Started</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    const state = {
+      view: 'packs',
+      billing: 'annual',
+      selectedPack: 'growth',
+      selectedRetainer: 'essentials',
+      selectedService: 'diy',
+      launchSupport: 'launch' // Default to Launch Support
+    };
+    
+    // Packs: base credits shown, total is what you get
+    const packs = {
+      starter: { name: 'Starter Pack', base: 10, bonus: 0, total: 10, price: 2500, validity: 3 },
+      growth: { name: 'Growth Pack', base: 22, bonus: 3, total: 25, price: 5500, validity: 6 },
+      scale: { name: 'Scale Pack', base: 33, bonus: 17, total: 50, price: 8250, validity: 12 }
+    };
+    
+    // Retainers: monthly credits use same logic
+    const retainers = {
+      essentials: { 
+        name: 'Essentials', 
+        monthlyBase: 10, monthlyBonus: 0, monthlyTotal: 10,
+        monthlyPrice: 2500, 
+        annualPrice: 25000, 
+        annualCredits: 120, 
+        annualSavings: 5000, 
+        minMonths: 3 
+      },
+      growth: { 
+        name: 'Growth', 
+        monthlyBase: 22, monthlyBonus: 3, monthlyTotal: 25,
+        monthlyPrice: 5500, 
+        annualPrice: 55000, 
+        annualCredits: 300,
+        annualSavings: 11000, 
+        minMonths: 6 
+      },
+      scale: { 
+        name: 'Scale', 
+        monthlyBase: 33, monthlyBonus: 17, monthlyTotal: 50,
+        monthlyPrice: 8250, 
+        annualPrice: 82500, 
+        annualCredits: 600,
+        annualSavings: 16500, 
+        minMonths: 12 
+      }
+    };
+    
+    const services = { 
+      diy: { name: 'DIY', price: 0 }, 
+      dwy: { name: 'Done-With-You', price: 450 }, 
+      dfy: { name: 'Done-For-You', price: 1500 } 
+    };
+    
+    // DOM
+    const mainToggle = document.querySelectorAll('.toggle button');
+    const packsView = document.getElementById('packs-view');
+    const retainersView = document.getElementById('retainers-view');
+    const packRows = document.querySelectorAll('.packs-row[data-pack]');
+    const launchOptions = document.querySelectorAll('.launch-option');
+    const billingOptions = document.querySelectorAll('.billing-option');
+    const serviceLevels = document.querySelectorAll('.service-level');
+    const retainerCardsContainer = document.getElementById('retainer-cards');
+    
+    // Main toggle
+    mainToggle.forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.view = btn.dataset.view;
+        mainToggle.forEach(b => b.classList.toggle('active', b === btn));
+        packsView.classList.toggle('active', state.view === 'packs');
+        retainersView.classList.toggle('active', state.view === 'retainers');
+      });
+    });
+    
+    // Pack selection
+    packRows.forEach(row => {
+      row.addEventListener('click', () => {
+        state.selectedPack = row.dataset.pack;
+        packRows.forEach(r => r.classList.toggle('selected', r === row));
+        updatePacksSummary();
+      });
+    });
+    
+    // Launch support
+    launchOptions.forEach(opt => {
+      opt.addEventListener('click', () => {
+        state.launchSupport = opt.dataset.support;
+        launchOptions.forEach(o => o.classList.toggle('selected', o === opt));
+        updatePacksSummary();
+      });
+    });
+    
+    // Billing toggle
+    billingOptions.forEach(opt => {
+      opt.addEventListener('click', () => {
+        state.billing = opt.dataset.billing;
+        billingOptions.forEach(o => o.classList.toggle('active', o === opt));
+        retainersView.classList.toggle('annual', state.billing === 'annual');
+        renderRetainerCards();
+        updateRetainersSummary();
+      });
+    });
+    
+    // Service levels
+    serviceLevels.forEach(level => {
+      level.addEventListener('click', () => {
+        state.selectedService = level.dataset.service;
+        serviceLevels.forEach(l => l.classList.toggle('selected', l === level));
+        updateRetainersSummary();
+      });
+    });
+    
+    // Switch to retainer
+    document.getElementById('switch-to-retainer').addEventListener('click', (e) => {
+      e.preventDefault();
+      mainToggle[1].click();
+    });
+    
+    // Render retainer cards
+    function renderRetainerCards() {
+      const isAnnual = state.billing === 'annual';
+      let html = '';
+      
+      for (const [key, r] of Object.entries(retainers)) {
+        const isSelected = state.selectedRetainer === key;
+        const priceDisplay = isAnnual ? Math.round(r.annualPrice / 12) : r.monthlyPrice;
+        const creditsDisplay = isAnnual ? r.annualCredits : r.monthlyTotal;
+        
+        // Build breakdown string for monthly view
+        let breakdownHtml = '';
+        if (!isAnnual && r.monthlyBonus > 0) {
+          breakdownHtml = `<div style="font-size: 11px; color: #2a7d2a; margin-top: 2px;">${r.monthlyBase} + ${r.monthlyBonus} free</div>`;
+        }
+        
+        html += `
+          <div class="retainer-card ${isSelected ? 'selected' : ''}" data-retainer="${key}">
+            <div class="retainer-card-top">
+              <div class="tier-name">${r.name}</div>
+              <div class="price-block">
+                <div class="price-main">€${priceDisplay.toLocaleString()}<small>/mo</small></div>
+                <div class="price-sub">${isAnnual ? `€${r.annualPrice.toLocaleString()} billed annually` : `${r.minMonths}-month minimum`}</div>
+              </div>
+            </div>
+            <div class="credits-info">
+              <strong>${creditsDisplay} credits</strong> ${isAnnual ? 'for the year' : 'per month'}
+              ${breakdownHtml}
+            </div>
+            ${isAnnual ? `<span class="savings">Save €${r.annualSavings.toLocaleString()}</span>` : ''}
+          </div>`;
+      }
+      
+      retainerCardsContainer.innerHTML = html;
+      
+      document.querySelectorAll('.retainer-card').forEach(card => {
+        card.addEventListener('click', () => {
+          state.selectedRetainer = card.dataset.retainer;
+          document.querySelectorAll('.retainer-card').forEach(c => c.classList.toggle('selected', c === card));
+          updateRetainersSummary();
+        });
+      });
+    }
+    
+    // Update packs summary
+    function updatePacksSummary() {
+      const pack = packs[state.selectedPack];
+      let lines = [];
+      let total = pack.price;
+      
+      // Show breakdown in summary
+      let creditsLabel = `${pack.total} credits`;
+      if (pack.bonus > 0) {
+        creditsLabel = `${pack.total} credits (${pack.base} + ${pack.bonus} free)`;
+      }
+      
+      lines.push({ label: `${pack.name}`, value: `€${pack.price.toLocaleString()}` });
+      lines.push({ label: creditsLabel, value: '', subtle: true });
+      
+      if (state.launchSupport === 'launch') {
+        lines.push({ label: 'Launch Support Package', value: '+€1,250' });
+        total += 1250;
+      }
+      
+      document.getElementById('packs-summary-lines').innerHTML = lines.map(l => {
+        if (l.subtle) {
+          return `<div class="summary-line" style="color: #888; font-size: 12px;"><span>${l.label}</span><span>${l.value}</span></div>`;
+        }
+        return `<div class="summary-line"><span>${l.label}</span><span>${l.value}</span></div>`;
+      }).join('');
+      
+      document.getElementById('packs-summary-total').textContent = `€${total.toLocaleString()}`;
+    }
+    
+    // Update retainers summary
+    function updateRetainersSummary() {
+      const r = retainers[state.selectedRetainer];
+      const isAnnual = state.billing === 'annual';
+      const service = services[state.selectedService];
+      let lines = [];
+      let total = 0;
+      
+      if (isAnnual) {
+        lines.push({ label: `${r.name} Retainer (annual)`, value: `€${r.annualPrice.toLocaleString()}` });
+        lines.push({ label: `${r.annualCredits} credits for the year`, value: '', subtle: true });
+        total = r.annualPrice;
+        
+        if (service.price > 0) {
+          const serviceTotal = service.price * 12;
+          lines.push({ label: `${service.name} × 12 mo`, value: `+€${serviceTotal.toLocaleString()}` });
+          total += serviceTotal;
+        }
+        
+        lines.push({ label: 'Setup fees', value: '€0', strike: '€1,250', green: true });
+        document.getElementById('retainers-summary-total').innerHTML = `€${total.toLocaleString()}<small>/year</small>`;
+      } else {
+        lines.push({ label: `${r.name} Retainer`, value: `€${r.monthlyPrice.toLocaleString()}` });
+        
+        let creditsLabel = `${r.monthlyTotal} credits/month`;
+        if (r.monthlyBonus > 0) {
+          creditsLabel = `${r.monthlyTotal} credits/mo (${r.monthlyBase} + ${r.monthlyBonus} free)`;
+        }
+        lines.push({ label: creditsLabel, value: '', subtle: true });
+        
+        total = r.monthlyPrice;
+        
+        if (service.price > 0) {
+          lines.push({ label: service.name, value: `+€${service.price.toLocaleString()}` });
+          total += service.price;
+        }
+        
+        lines.push({ label: 'Setup fees', value: '€0', strike: '€1,250', green: true });
+        document.getElementById('retainers-summary-total').innerHTML = `€${total.toLocaleString()}<small>/mo</small>`;
+      }
+      
+      document.getElementById('retainers-summary-lines').innerHTML = lines.map(l => {
+        let valueHtml = l.strike ? `<span class="strike">${l.strike}</span>${l.value}` : l.value;
+        if (l.subtle) {
+          return `<div class="summary-line" style="color: #888; font-size: 12px;"><span>${l.label}</span><span>${valueHtml}</span></div>`;
+        }
+        return `<div class="summary-line ${l.green ? 'green' : ''}"><span>${l.label}</span><span>${valueHtml}</span></div>`;
+      }).join('');
+    }
+    
+    // Init
+    renderRetainerCards();
+    updatePacksSummary();
+    updateRetainersSummary();
+  </script>
+</body>
+</html>
