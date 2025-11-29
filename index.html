@@ -300,8 +300,49 @@
       cursor: pointer;
       transition: background 0.15s;
     }
-    
+
     .summary-cta:hover { background: #333; }
+
+    .summary-whatsapp {
+      width: 100%;
+      padding: 12px;
+      background: #25D366;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+
+    .summary-whatsapp:hover { background: #20BA5A; }
+
+    .summary-divider-text {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 12px 0;
+      font-size: 11px;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .summary-divider-text::before,
+    .summary-divider-text::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e0e0e0;
+    }
     
     /* ======================== */
     /* RETAINERS VIEW           */
@@ -615,7 +656,12 @@
               <span>Total</span>
               <span id="packs-summary-total">€6,750</span>
             </div>
-            <button class="summary-cta">Get Started</button>
+            <button class="summary-cta" id="packs-cta">Get Started</button>
+            <div class="summary-divider-text">or</div>
+            <a href="#" class="summary-whatsapp" id="packs-whatsapp">
+              <span>💬</span>
+              <span>Questions? Chat on WhatsApp</span>
+            </a>
           </div>
         </div>
       </div>
@@ -710,7 +756,12 @@
             <span>Total</span>
             <span id="retainers-summary-total">€25,000<small>/year</small></span>
           </div>
-          <button class="summary-cta">Get Started</button>
+          <button class="summary-cta" id="retainers-cta">Get Started</button>
+          <div class="summary-divider-text">or</div>
+          <a href="#" class="summary-whatsapp" id="retainers-whatsapp">
+            <span>💬</span>
+            <span>Questions? Chat on WhatsApp</span>
+          </a>
         </div>
       </div>
     </div>
@@ -764,12 +815,99 @@
       }
     };
     
-    const services = { 
-      diy: { name: 'DIY', price: 0 }, 
-      dwy: { name: 'Done-With-You', price: 450 }, 
-      dfy: { name: 'Done-For-You', price: 1500 } 
+    const services = {
+      diy: { name: 'DIY', price: 0 },
+      dwy: { name: 'Done-With-You', price: 450 },
+      dfy: { name: 'Done-For-You', price: 1500 }
     };
-    
+
+    // WhatsApp & Calendar Links
+    const WHATSAPP_NUMBER = '33658660977';
+    const CALENDAR_LINK = 'https://cal.com/studio-intangible'; // Update with your actual Cal.com link
+
+    // Stripe Payment Links (to be added)
+    const STRIPE_LINKS = {
+      packs: {
+        starter: 'https://buy.stripe.com/xxx_starter',
+        starter_launch: 'https://buy.stripe.com/xxx_starter_launch',
+        growth: 'https://buy.stripe.com/xxx_growth',
+        growth_launch: 'https://buy.stripe.com/xxx_growth_launch',
+        scale: 'https://buy.stripe.com/xxx_scale',
+        scale_launch: 'https://buy.stripe.com/xxx_scale_launch'
+      },
+      retainers: {
+        essentials_monthly: 'https://buy.stripe.com/xxx_essentials_monthly',
+        essentials_annual: 'https://buy.stripe.com/xxx_essentials_annual',
+        growth_monthly: 'https://buy.stripe.com/xxx_growth_monthly',
+        growth_annual: 'https://buy.stripe.com/xxx_growth_annual'
+      }
+    };
+
+    // Generate WhatsApp message based on current selection
+    function generateWhatsAppMessage() {
+      let message = 'Hi Studio Intangible! I\'m interested in your services.\n\n';
+
+      if (state.view === 'packs') {
+        const pack = packs[state.selectedPack];
+        message += `📦 *Credit Pack Selection:*\n`;
+        message += `• Package: ${pack.name}\n`;
+        message += `• Credits: ${pack.total} credits (${pack.validity} months validity)\n`;
+        message += `• Price: €${pack.price.toLocaleString()}\n`;
+
+        if (state.launchSupport === 'launch') {
+          message += `• Launch Support: Yes (+€1,250)\n`;
+          message += `• Total: €${(pack.price + 1250).toLocaleString()}\n`;
+        } else {
+          message += `• Support: Self-Service (included)\n`;
+          message += `• Total: €${pack.price.toLocaleString()}\n`;
+        }
+      } else {
+        const r = retainers[state.selectedRetainer];
+        const service = services[state.selectedService];
+        const isAnnual = state.billing === 'annual';
+
+        message += `🔄 *Monthly Retainer Selection:*\n`;
+        message += `• Tier: ${r.name}\n`;
+        message += `• Billing: ${isAnnual ? 'Annual' : 'Monthly'}\n`;
+
+        if (isAnnual) {
+          message += `• Credits: ${r.annualCredits} credits/year\n`;
+          message += `• Price: €${r.annualPrice.toLocaleString()}/year (€${Math.round(r.annualPrice / 12).toLocaleString()}/mo)\n`;
+          if (service.price > 0) {
+            message += `• Service Level: ${service.name} (+€${(service.price * 12).toLocaleString()}/year)\n`;
+            message += `• Total: €${(r.annualPrice + service.price * 12).toLocaleString()}/year\n`;
+          } else {
+            message += `• Service Level: ${service.name} (included)\n`;
+            message += `• Total: €${r.annualPrice.toLocaleString()}/year\n`;
+          }
+          message += `• Savings: €${r.annualSavings.toLocaleString()} (2 months free)\n`;
+        } else {
+          message += `• Credits: ${r.monthlyTotal} credits/month\n`;
+          message += `• Price: €${r.monthlyPrice.toLocaleString()}/month\n`;
+          if (service.price > 0) {
+            message += `• Service Level: ${service.name} (+€${service.price.toLocaleString()}/mo)\n`;
+            message += `• Total: €${(r.monthlyPrice + service.price).toLocaleString()}/month\n`;
+          } else {
+            message += `• Service Level: ${service.name} (included)\n`;
+            message += `• Total: €${r.monthlyPrice.toLocaleString()}/month\n`;
+          }
+          message += `• Minimum commitment: ${r.minMonths} months\n`;
+        }
+        message += `• Setup fees: Waived (€1,250 value)\n`;
+      }
+
+      message += `\nI'd like to learn more about getting started!`;
+
+      return encodeURIComponent(message);
+    }
+
+    // Open WhatsApp with pre-filled message
+    function openWhatsApp() {
+      const message = generateWhatsAppMessage();
+      const url = `https://api.whatsapp.com/send/?phone=${WHATSAPP_NUMBER}&text=${message}`;
+      window.open(url, '_blank');
+    }
+
     // DOM
     const mainToggle = document.querySelectorAll('.toggle button');
     const packsView = document.getElementById('packs-view');
@@ -833,7 +971,18 @@
       e.preventDefault();
       mainToggle[1].click();
     });
-    
+
+    // WhatsApp buttons
+    document.getElementById('packs-whatsapp').addEventListener('click', (e) => {
+      e.preventDefault();
+      openWhatsApp();
+    });
+
+    document.getElementById('retainers-whatsapp').addEventListener('click', (e) => {
+      e.preventDefault();
+      openWhatsApp();
+    });
+
     // Render retainer cards
     function renderRetainerCards() {
       const isAnnual = state.billing === 'annual';
